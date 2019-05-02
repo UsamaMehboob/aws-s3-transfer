@@ -1,4 +1,4 @@
-# S3 BackUp File Transfer Utility 
+# S3 BackUp File Transfer Utility. 
 This utility uses single and multipart uploads using boto3 library to transfer files to S3 bucket. 
 
 ## Get Your Environment Ready
