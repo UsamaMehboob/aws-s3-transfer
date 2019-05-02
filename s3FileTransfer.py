@@ -143,7 +143,7 @@ class S3Transfer:
             client.upload_file(eachfiledic["filepath"], self.bucketName, eachfiledic["filename"] ,
                 Config = config
             )
-            s3Log.info ("{} got uploaded ".format(eachfiledic["filepath"]))
+            s3Log.info ("{} got uploaded on s3 bucket = {}\n".format(eachfiledic["filepath"], self.bucketName))
             toReturn = True
         except (ClientError, boto3.exceptions.S3UploadFailedError) as e:
             s3Log.error ("FAILED TO UPLOAD file:{}\n".format(eachfiledic["filename"]) )
@@ -163,7 +163,7 @@ class S3Transfer:
         try:
             response = client.put_object(Body=fileobj, Bucket=self.bucketName,
                     Key=eachfiledic["filename"], ContentMD5=eachfiledic["md5"])
-            s3Log.info ("{} got uploaded ".format(eachfiledic["filepath"]))
+            s3Log.info ("{} got uploaded on s3 bucket = {}\n".format(eachfiledic["filepath"], self.bucketName))
             toReturn = True
         except (ClientError, boto3.exceptions.S3UploadFailedError) as e:
             s3Log.error ("FAILED TO UPLOAD file:{}\n".format(eachfiledic["filename"]) )
@@ -184,7 +184,7 @@ class S3Transfer:
         for eachfiledic in self.fileTobeUploaded:
             if eachfiledic["uploadedSuccess"] == 0:     #Means this file never got uploaded.
                 if os.path.getsize(eachfiledic["filepath"]) < 1000000000: #<1GB
-                    s3Log.info ("FileSize < 1GB for :{}, so using single part upload. \n".format(eachfiledic["filepath"]) )
+                    s3Log.info ("FileSize < 1GB for :{}, so using single part upload.".format(eachfiledic["filepath"]) )
                     if self.singlePartUpload(eachfiledic) == True:
                         eachfiledic["uploadedSuccess"] = 1
                         allfilesuploadedcount = allfilesuploadedcount + 1
